@@ -1,74 +1,104 @@
-<html><head>
+<html><head><base href="https://websim.ai" />
 <title>LBRP Ritual Guide - Centered Animation</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
   body {
-    font-family: 'Helvetica', Arial, sans-serif;
-    background-color: #0a0a1a;
-    color: #e0e0e0;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    background-color: #1C1C1E;
+    color: #F2F2F7;
     line-height: 1.6;
     margin: 0;
     padding: 0;
   }
+
   .container {
     max-width: 800px;
     margin: 0 auto;
     padding: 20px;
     box-sizing: border-box;
   }
+
   h1, h2 {
-    color: #4a8fe7;
+    color: #0A84FF;
     text-align: center;
   }
+
   .canvas-container {
     display: flex;
     justify-content: center;
     align-items: center;
     margin: 20px 0;
   }
+
   #ritual-canvas {
-    background-color: #0f1a2e;
-    border: 2px solid #4a8fe7;
-    border-radius: 10px;
+    background-color: #000000;
+    border: 2px solid #ff0a1a;
+    border-radius: 20px;
     max-width: 100%;
     height: auto;
   }
+
   .controls {
     text-align: center;
     margin-top: 20px;
   }
+
   .control-button {
-    background-color: #4a8fe7;
+    background-color: #1a44fd;
     color: white;
     border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
+    padding: 15px 25px;
+    border-radius: 25px;
     cursor: pointer;
-    font-size: 16px;
+    font-size: 18px;
     margin: 10px;
-    transition: background-color 0.3s;
+    transition: background-color 0.3s, transform 0.3s;
     width: 80%;
     max-width: 200px;
   }
+
   .control-button:hover {
-    background-color: #3a7bd5;
+    background-color: #b01919;
+    transform: scale(1.05);
   }
+
   .step {
-    background-color: #16213e;
-    border-radius: 10px;
-    padding: 15px;
-    margin-bottom: 15px;
+    background-color: #030306;
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 20px;
   }
+
   .step h3 {
-    color: #00b4d8;
+    color: #348fc7;
     margin-top: 0;
   }
+
+  .step p, .step ul {
+    color: #F2F2F7;
+  }
+
+  .step ul {
+    list-style-type: none;
+    padding-left: 0;
+  }
+
+  .step ul li::before {
+    content: "•";
+    color: #34C759;
+    font-weight: bold;
+    display: inline-block;
+    width: 1em;
+    margin-left: -1em;
+  }
+
   .disclaimer {
     font-size: 0.8em;
-    color: #888;
+    color: #f41717;
     text-align: center;
     margin-top: 20px;
   }
+
   @media (max-width: 600px) {
     h1 {
       font-size: 24px;
@@ -87,7 +117,7 @@
 </head>
 <body>
   <div class="container">
-    <h1>2D Animated LBRP Ritual Guide</h1>
+    <h1>Animated LBRP Ritual Guide</h1>
     <p>Welcome to the interactive 2D animated guide for performing the Lesser Banishing Ritual of the Pentagram (LBRP). This visualization tool will help you learn and practice this fundamental magical ritual.</p>
     
     <div class="canvas-container">
@@ -97,6 +127,22 @@
     <div class="controls">
       <button class="control-button" id="startButton">Start Animation</button>
       <button class="control-button" id="resetButton">Reset</button>
+    </div>
+    
+    <div class="value-section">
+      <h3>The Value of LBRP for Students of Magick and Meditation</h3>
+      <p>The Lesser Banishing Ritual of the Pentagram (LBRP) is a cornerstone practice in Western esoteric traditions, offering numerous benefits to students of magick and meditation:</p>
+      <ul>
+        <li><strong>Energy Cleansing:</strong> LBRP helps clear negative energies from your space and aura, creating a clean slate for magical work or meditation.</li>
+        <li><strong>Psychic Protection:</strong> It establishes a protective barrier against unwanted influences, enhancing your sense of safety during spiritual practices.</li>
+        <li><strong>Concentration Enhancement:</strong> The ritual's precise movements and visualizations improve focus and mental discipline.</li>
+        <li><strong>Elemental Balancing:</strong> By invoking the four elements, LBRP helps balance these forces within the practitioner.</li>
+        <li><strong>Meditative Framework:</strong> The ritual's structure provides a consistent, grounding practice that can deepen one's meditative experiences.</li>
+        <li><strong>Energetic Attunement:</strong> Regular practice attunes the practitioner to subtle energies, enhancing overall magical sensitivity.</li>
+        <li><strong>Psychological Integration:</strong> Working with divine names and archangels can facilitate integration of various aspects of the psyche.</li>
+        <li><strong>Preparation for Advanced Work:</strong> LBRP lays a foundation for more complex rituals and magical operations.</li>
+      </ul>
+      <p>By incorporating LBRP into their daily practice, students of magick and meditation can create a stable, protected, and energetically balanced foundation for their spiritual growth and magical endeavors.</p>
     </div>
     
     <h2>Ritual Steps</h2>
@@ -143,7 +189,7 @@
     <div class="disclaimer">
       <p>Disclaimer: This animation is a learning aid and visualization tool. Effective magical practice requires personal focus, intent, and energy work beyond what can be demonstrated visually.</p>
     </div>
-      </div>
+  </div>
 
   <script>
     const canvas = document.getElementById('ritual-canvas');
