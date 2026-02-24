@@ -1,228 +1,600 @@
-<html><head><base href="https://websim.ai" />
-<title>LBRP Ritual Guide - Centered Animation</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<style>
-  body {
-    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-    background-color: #1C1C1E;
-    color: #F2F2F7;
-    line-height: 1.6;
-    margin: 0;
-    padding: 0;
-  }
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>LBRP Ritual Guide</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="description" content="Interactive animated guide for the Lesser Banishing Ritual of the Pentagram (LBRP)." />
 
-  .container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
-    box-sizing: border-box;
-  }
+  <style>
+    /* ── CSS custom properties (color tokens) ── */
+    :root {
+      --sat: env(safe-area-inset-top,    0px);
+      --sar: env(safe-area-inset-right,  0px);
+      --sab: env(safe-area-inset-bottom, 0px);
+      --sal: env(safe-area-inset-left,   0px);
 
-  h1, h2 {
-    color: #0A84FF;
-    text-align: center;
-  }
-
-  .canvas-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 20px 0;
-  }
-
-  #ritual-canvas {
-    background-color: #000000;
-    border: 2px solid #ff0a1a;
-    border-radius: 20px;
-    max-width: 100%;
-    height: auto;
-  }
-
-  .controls {
-    text-align: center;
-    margin-top: 20px;
-  }
-
-  .control-button {
-    background-color: #1a44fd;
-    color: white;
-    border: none;
-    padding: 15px 25px;
-    border-radius: 25px;
-    cursor: pointer;
-    font-size: 18px;
-    margin: 10px;
-    transition: background-color 0.3s, transform 0.3s;
-    width: 80%;
-    max-width: 200px;
-  }
-
-  .control-button:hover {
-    background-color: #b01919;
-    transform: scale(1.05);
-  }
-
-  .step {
-    background-color: #030306;
-    border-radius: 15px;
-    padding: 20px;
-    margin-bottom: 20px;
-  }
-
-  .step h3 {
-    color: #348fc7;
-    margin-top: 0;
-  }
-
-  .step p, .step ul {
-    color: #F2F2F7;
-  }
-
-  .step ul {
-    list-style-type: none;
-    padding-left: 0;
-  }
-
-  .step ul li::before {
-    content: "•";
-    color: #34C759;
-    font-weight: bold;
-    display: inline-block;
-    width: 1em;
-    margin-left: -1em;
-  }
-
-  .disclaimer {
-    font-size: 0.8em;
-    color: #f41717;
-    text-align: center;
-    margin-top: 20px;
-  }
-
-  @media (max-width: 600px) {
-    h1 {
-      font-size: 24px;
+      /* Light mode tokens */
+      --bg-page:       #F2F2F7;
+      --bg-card:       #FFFFFF;
+      --bg-header:     rgba(242,242,247,0.80);
+      --bg-btn-ghost:  rgba(60,60,67,0.12);
+      --text-primary:  #1C1C1E;
+      --text-secondary:#3C3C43;
+      --text-tertiary: #8E8E93;
+      --text-accent:   #0A84FF;
+      --text-step:     #348fc7;
+      --text-bullet:   #34C759;
+      --text-error:    #FF3B30;
+      --border-card:   rgba(0,0,0,0.06);
+      --border-header: rgba(0,0,0,0.10);
+      --shadow-card:   0 1px 4px rgba(0,0,0,0.08);
+      --btn-primary:   #0A84FF;
+      --btn-primary-text: #FFFFFF;
+      --btn-ghost-text:#0A84FF;
     }
-    h2 {
-      font-size: 20px;
+
+    [data-theme="dark"] {
+      --bg-page:       #1C1C1E;
+      --bg-card:       #2C2C2E;
+      --bg-header:     rgba(28,28,30,0.82);
+      --bg-btn-ghost:  rgba(255,255,255,0.14);
+      --text-primary:  #F2F2F7;
+      --text-secondary:#AEAEB2;
+      --text-tertiary: #636366;
+      --text-accent:   #0A84FF;
+      --text-step:     #5AC8FA;
+      --text-bullet:   #30D158;
+      --text-error:    #FF453A;
+      --border-card:   rgba(255,255,255,0.08);
+      --border-header: rgba(255,255,255,0.12);
+      --shadow-card:   0 1px 6px rgba(0,0,0,0.30);
+      --btn-primary:   #0A84FF;
+      --btn-primary-text: #FFFFFF;
+      --btn-ghost-text:#0A84FF;
     }
-    .step h3 {
-      font-size: 18px;
+
+    /* ── Base reset & typography ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue",
+                   Helvetica, Arial, sans-serif;
+      background-color: var(--bg-page);
+      color: var(--text-primary);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      min-height: 100dvh;
+      transition: background-color 0.3s ease, color 0.3s ease;
     }
-    p, ul {
-      font-size: 14px;
+
+    /* ── Layout: narrow iPhone-first column ── */
+    .l-wrap {
+      max-width: 430px;
+      margin-inline: auto;
     }
-  }
-</style>
+
+    /* ── Sticky glass header ── */
+    .header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: var(--bg-header);
+      backdrop-filter: saturate(180%) blur(20px);
+      -webkit-backdrop-filter: saturate(180%) blur(20px);
+      border-bottom: 1px solid var(--border-header);
+      padding-top: var(--sat);
+      transition: background 0.3s ease;
+    }
+
+    .header-inner {
+      max-width: 430px;
+      margin-inline: auto;
+      padding-inline: 20px;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .header-title {
+      font-size: 17px;
+      font-weight: 600;
+      letter-spacing: -0.3px;
+      color: var(--text-primary);
+    }
+
+    /* ── Theme toggle ── */
+    .theme-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: none;
+      cursor: pointer;
+      background: var(--bg-btn-ghost);
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.12s ease, background 0.3s ease;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .theme-btn:active { transform: scale(0.88); }
+    .theme-btn svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 2; }
+
+    /* ── Main content ── */
+    .main-content {
+      padding: 0 20px calc(40px + var(--sab));
+    }
+
+    /* ── Hero ── */
+    .hero {
+      padding-top: 32px;
+      padding-bottom: 24px;
+      text-align: center;
+    }
+
+    .hero h1 {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue",
+                   Helvetica, Arial, sans-serif;
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      line-height: 1.2;
+      color: var(--text-accent);
+      margin-bottom: 12px;
+    }
+
+    .hero p {
+      font-size: 15px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    /* ── Canvas card ── */
+    .canvas-wrap {
+      margin-bottom: 20px;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: var(--shadow-card);
+      background: #000;
+    }
+
+    #ritual-canvas {
+      display: block;
+      width: 100%;
+      height: auto;
+      border-radius: 16px;
+    }
+
+    /* ── Controls ── */
+    .controls {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      margin-bottom: 32px;
+    }
+
+    .btn {
+      flex: 1;
+      max-width: 180px;
+      padding: 14px 20px;
+      border-radius: 20px;
+      border: none;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 17px;
+      font-weight: 600;
+      letter-spacing: -0.2px;
+      transition: transform 0.12s ease, box-shadow 0.12s ease;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .btn:active { transform: scale(0.94); box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
+
+    .btn-primary {
+      background: var(--btn-primary);
+      color: var(--btn-primary-text);
+      box-shadow: 0 2px 10px rgba(10,132,255,0.35);
+    }
+
+    .btn-ghost {
+      background: var(--bg-btn-ghost);
+      color: var(--btn-ghost-text);
+    }
+
+    /* ── Section headings ── */
+    .section-heading {
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue",
+                   Helvetica, Arial, sans-serif;
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: -0.4px;
+      color: var(--text-accent);
+      margin-bottom: 16px;
+    }
+
+    /* ── Cards ── */
+    .card {
+      background: var(--bg-card);
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 12px;
+      border: 1px solid var(--border-card);
+      box-shadow: var(--shadow-card);
+      transition: background 0.3s ease;
+    }
+
+    .card h3 {
+      font-size: 17px;
+      font-weight: 600;
+      color: var(--text-step);
+      margin-bottom: 8px;
+    }
+
+    .card p {
+      font-size: 15px;
+      color: var(--text-secondary);
+      line-height: 1.55;
+      margin-bottom: 10px;
+    }
+    .card p:last-child { margin-bottom: 0; }
+
+    /* ── Bullet lists ── */
+    .bullet-list {
+      list-style: none;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .bullet-list li {
+      display: flex;
+      gap: 10px;
+      font-size: 15px;
+      color: var(--text-primary);
+      line-height: 1.45;
+    }
+
+    .bullet-list li .dot {
+      color: var(--text-bullet);
+      font-weight: 700;
+      flex-shrink: 0;
+      margin-top: 1px;
+      user-select: none;
+    }
+
+    .bullet-list strong {
+      font-weight: 600;
+    }
+
+    /* ── Value section card ── */
+    .value-card {
+      margin-bottom: 24px;
+    }
+
+    /* ── Disclaimer ── */
+    .disclaimer {
+      font-size: 12px;
+      color: var(--text-error);
+      text-align: center;
+      line-height: 1.6;
+      padding: 0 8px;
+      margin-bottom: 16px;
+    }
+
+    /* ── Divider ── */
+    .section-divider {
+      height: 1px;
+      background: var(--border-card);
+      margin: 24px 0 20px;
+    }
+
+    /* ── Scroll reveal ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(22px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ── Focus ring (accessibility) ── */
+    :focus-visible {
+      outline: 3px solid #0A84FF;
+      outline-offset: 3px;
+      border-radius: 8px;
+    }
+
+    /* ── Reduced-motion overrides ── */
+    @media (prefers-reduced-motion: reduce) {
+      .reveal {
+        opacity: 1;
+        transform: none;
+        transition: none;
+      }
+      .reveal.visible {
+        opacity: 1;
+        transform: none;
+      }
+      .btn:active,
+      .theme-btn:active {
+        transform: none;
+      }
+      body,
+      .header,
+      .card,
+      .hero-animate,
+      .btn,
+      .theme-btn {
+        animation: none;
+        transition: none;
+      }
+    }
+
+    /* ── Load animation ── */
+    @keyframes fadeSlideIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0);    }
+    }
+    .hero-animate {
+      animation: fadeSlideIn 0.65s ease forwards;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .hero-animate { animation: none; }
+    }
+  </style>
 </head>
-<body>
-  <div class="container">
-    <h1>Animated LBRP Ritual Guide</h1>
-    <p>Welcome to the interactive 2D animated guide for performing the Lesser Banishing Ritual of the Pentagram (LBRP). This visualization tool will help you learn and practice this fundamental magical ritual.</p>
-    
-    <div class="canvas-container">
-      <canvas id="ritual-canvas" width="600" height="400"></canvas>
-    </div>
-    
-    <div class="controls">
-      <button class="control-button" id="startButton">Start Animation</button>
-      <button class="control-button" id="resetButton">Reset</button>
-    </div>
-    
-    <h2>Ritual Steps</h2>
-    
-    <div class="step">
-      <h3>1. The Qabalistic Cross</h3>
-      <p>The animation will guide you through the following movements:</p>
-      <ul>
-        <li>Touch your forehead: "Atah" (Thou art)</li>
-        <li>Touch your chest: "Malkuth" (Kingdom)</li>
-        <li>Touch your right shoulder: "Ve-Geburah" (and the Power)</li>
-        <li>Touch your left shoulder: "Ve-Gedulah" (and the Glory)</li>
-        <li>Clasp your hands at your chest: "Le-Olam, Amen" (Forever, Amen)</li>
-      </ul>
-    </div>
-    
-    <div class="step">
-      <h3>2. The Pentagrams</h3>
-      <p>Watch as glowing pentagrams are drawn in each cardinal direction:</p>
-      <ul>
-        <li>East: Yellow pentagram</li>
-        <li>South: Red pentagram</li>
-        <li>West: Blue pentagram</li>
-        <li>North: Green pentagram</li>
-      </ul>
-    </div>
-    
-    <div class="step">
-      <h3>3. Calling the Archangels</h3>
-      <p>Observe as each Archangel is invoked:</p>
-      <ul>
-        <li>East: Raphael</li>
-        <li>South: Michael</li>
-        <li>West: Gabriel</li>
-        <li>North: Uriel</li>
-      </ul>
-    </div>
-    
-    <div class="step">
-      <h3>4. Completion</h3>
-      <p>The animation concludes by showing all four pentagrams glowing simultaneously, forming a protective circle.</p>
-    </div>
 
-    <div class="step">
-    <div class="value-section">
-      <h3>The Value of LBRP for Students of Magick and Meditation</h3>
-      <p>The Lesser Banishing Ritual of the Pentagram (LBRP) is a cornerstone practice in Western esoteric traditions, offering numerous benefits to students of magick and meditation:</p>
-      <ul>
-        <li><strong>Energy Cleansing:</strong> LBRP helps clear negative energies from your space and aura, creating a clean slate for magical work or meditation.</li>
-        <li><strong>Psychic Protection:</strong> It establishes a protective barrier against unwanted influences, enhancing your sense of safety during spiritual practices.</li>
-        <li><strong>Concentration Enhancement:</strong> The ritual's precise movements and visualizations improve focus and mental discipline.</li>
-        <li><strong>Elemental Balancing:</strong> By invoking the four elements, LBRP helps balance these forces within the practitioner.</li>
-        <li><strong>Meditative Framework:</strong> The ritual's structure provides a consistent, grounding practice that can deepen one's meditative experiences.</li>
-        <li><strong>Energetic Attunement:</strong> Regular practice attunes the practitioner to subtle energies, enhancing overall magical sensitivity.</li>
-        <li><strong>Psychological Integration:</strong> Working with divine names and archangels can facilitate integration of various aspects of the psyche.</li>
-        <li><strong>Preparation for Advanced Work:</strong> LBRP lays a foundation for more complex rituals and magical operations.</li>
-      </ul>
-      <p>By incorporating LBRP into their daily practice, students of magick and meditation can create a stable, protected, and energetically balanced foundation for their spiritual growth and magical endeavors.</p>
+<body>
+
+  <!-- ── Sticky glass header ── -->
+  <header class="header">
+    <div class="header-inner">
+      <span class="header-title">LBRP Guide</span>
+      <button id="themeToggle" class="theme-btn" aria-label="Toggle light/dark mode">
+        <!-- Moon (shown in light mode → click to go dark) -->
+        <svg id="iconMoon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+        </svg>
+        <!-- Sun (shown in dark mode → click to go light) -->
+        <svg id="iconSun" viewBox="0 0 24 24" aria-hidden="true" style="display:none">
+          <circle cx="12" cy="12" r="5"/>
+          <line x1="12" y1="1"  x2="12" y2="3"/>
+          <line x1="12" y1="21" x2="12" y2="23"/>
+          <line x1="4.22" y1="4.22"   x2="5.64"  y2="5.64"/>
+          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+          <line x1="1"  y1="12" x2="3"  y2="12"/>
+          <line x1="21" y1="12" x2="23" y2="12"/>
+          <line x1="4.22" y1="19.78"  x2="5.64"  y2="18.36"/>
+          <line x1="18.36" y1="5.64"  x2="19.78" y2="4.22"/>
+        </svg>
+      </button>
     </div>
-    </div>
-    <div class="disclaimer">
-      <p>Disclaimer: This animation is a learning aid and visualization tool. Effective magical practice requires personal focus, intent, and energy work beyond what can be demonstrated visually.</p>
-    </div>
-  </div>
+  </header>
+
+  <!-- ── Main ── -->
+  <main>
+    <div class="l-wrap main-content">
+
+      <!-- Hero -->
+      <section class="hero hero-animate" aria-label="Introduction">
+        <h1>Animated LBRP<br>Ritual Guide</h1>
+        <p>Welcome to the interactive 2D animated guide for performing the
+           Lesser Banishing Ritual of the Pentagram (LBRP). This visualization
+           tool will help you learn and practice this fundamental magical ritual.</p>
+      </section>
+
+      <!-- Canvas -->
+      <div class="canvas-wrap reveal">
+        <canvas id="ritual-canvas" width="600" height="400"></canvas>
+      </div>
+
+      <!-- Controls -->
+      <div class="controls reveal">
+        <button id="startButton" class="btn btn-primary">Start</button>
+        <button id="resetButton" class="btn btn-ghost">Reset</button>
+      </div>
+
+      <!-- ══════════════════════════════════════════ -->
+      <!--  Ritual Steps                              -->
+      <!-- ══════════════════════════════════════════ -->
+      <section aria-labelledby="ritual-steps-heading">
+        <h2 id="ritual-steps-heading" class="section-heading reveal">Ritual Steps</h2>
+
+        <!-- Step 1 -->
+        <article class="card reveal">
+          <h3>1. The Qabalistic Cross</h3>
+          <p>The animation will guide you through the following movements:</p>
+          <ul class="bullet-list">
+            <li><span class="dot">•</span><span>Touch your forehead: "Atah" (Thou art)</span></li>
+            <li><span class="dot">•</span><span>Touch your chest: "Malkuth" (Kingdom)</span></li>
+            <li><span class="dot">•</span><span>Touch your right shoulder: "Ve-Geburah" (and the Power)</span></li>
+            <li><span class="dot">•</span><span>Touch your left shoulder: "Ve-Gedulah" (and the Glory)</span></li>
+            <li><span class="dot">•</span><span>Clasp your hands at your chest: "Le-Olam, Amen" (Forever, Amen)</span></li>
+          </ul>
+        </article>
+
+        <!-- Step 2 -->
+        <article class="card reveal">
+          <h3>2. The Pentagrams</h3>
+          <p>Watch as glowing pentagrams are drawn in each cardinal direction:</p>
+          <ul class="bullet-list">
+            <li><span class="dot">•</span><span>East: Yellow pentagram</span></li>
+            <li><span class="dot">•</span><span>South: Red pentagram</span></li>
+            <li><span class="dot">•</span><span>West: Blue pentagram</span></li>
+            <li><span class="dot">•</span><span>North: Green pentagram</span></li>
+          </ul>
+        </article>
+
+        <!-- Step 3 -->
+        <article class="card reveal">
+          <h3>3. Calling the Archangels</h3>
+          <p>Observe as each Archangel is invoked:</p>
+          <ul class="bullet-list">
+            <li><span class="dot">•</span><span>East: Raphael</span></li>
+            <li><span class="dot">•</span><span>South: Michael</span></li>
+            <li><span class="dot">•</span><span>West: Gabriel</span></li>
+            <li><span class="dot">•</span><span>North: Uriel</span></li>
+          </ul>
+        </article>
+
+        <!-- Step 4 -->
+        <article class="card reveal">
+          <h3>4. Completion</h3>
+          <p>The animation concludes by showing all four pentagrams glowing
+             simultaneously, forming a protective circle.</p>
+        </article>
+      </section>
+
+      <div class="section-divider"></div>
+
+      <!-- ══════════════════════════════════════════ -->
+      <!--  The Value of LBRP                         -->
+      <!-- ══════════════════════════════════════════ -->
+      <section aria-labelledby="value-heading">
+        <h2 id="value-heading" class="section-heading reveal">
+          The Value of LBRP for Students of Magick and Meditation
+        </h2>
+
+        <article class="card value-card reveal">
+          <p>The Lesser Banishing Ritual of the Pentagram (LBRP) is a cornerstone
+             practice in Western esoteric traditions, offering numerous benefits to
+             students of magick and meditation:</p>
+          <ul class="bullet-list" style="margin-top:14px;margin-bottom:14px;">
+            <li>
+              <span class="dot">•</span>
+              <span><strong>Energy Cleansing:</strong> LBRP helps clear negative
+              energies from your space and aura, creating a clean slate for magical
+              work or meditation.</span>
+            </li>
+            <li>
+              <span class="dot">•</span>
+              <span><strong>Psychic Protection:</strong> It establishes a protective
+              barrier against unwanted influences, enhancing your sense of safety
+              during spiritual practices.</span>
+            </li>
+            <li>
+              <span class="dot">•</span>
+              <span><strong>Concentration Enhancement:</strong> The ritual's precise
+              movements and visualizations improve focus and mental discipline.</span>
+            </li>
+            <li>
+              <span class="dot">•</span>
+              <span><strong>Elemental Balancing:</strong> By invoking the four
+              elements, LBRP helps balance these forces within the practitioner.</span>
+            </li>
+            <li>
+              <span class="dot">•</span>
+              <span><strong>Meditative Framework:</strong> The ritual's structure
+              provides a consistent, grounding practice that can deepen one's
+              meditative experiences.</span>
+            </li>
+            <li>
+              <span class="dot">•</span>
+              <span><strong>Energetic Attunement:</strong> Regular practice attunes
+              the practitioner to subtle energies, enhancing overall magical
+              sensitivity.</span>
+            </li>
+            <li>
+              <span class="dot">•</span>
+              <span><strong>Psychological Integration:</strong> Working with divine
+              names and archangels can facilitate integration of various aspects of
+              the psyche.</span>
+            </li>
+            <li>
+              <span class="dot">•</span>
+              <span><strong>Preparation for Advanced Work:</strong> LBRP lays a
+              foundation for more complex rituals and magical operations.</span>
+            </li>
+          </ul>
+          <p>By incorporating LBRP into their daily practice, students of magick
+             and meditation can create a stable, protected, and energetically
+             balanced foundation for their spiritual growth and magical
+             endeavors.</p>
+        </article>
+      </section>
+
+      <!-- Disclaimer -->
+      <footer>
+        <p class="disclaimer reveal">
+          Disclaimer: This animation is a learning aid and visualization tool.
+          Effective magical practice requires personal focus, intent, and energy
+          work beyond what can be demonstrated visually.
+        </p>
+      </footer>
+
+    </div><!-- /l-wrap -->
+  </main>
+
+  <!-- ══════════════════════════════════════════ -->
+  <!--  Scripts                                   -->
+  <!-- ══════════════════════════════════════════ -->
 
   <script>
-    const canvas = document.getElementById('ritual-canvas');
-    const ctx = canvas.getContext('2d');
-    const startButton = document.getElementById('startButton');
-    const resetButton = document.getElementById('resetButton');
+    /* ── Theme (light / dark) ── */
+    (function () {
+      var stored = localStorage.getItem('lbrp-theme');
+      var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      var dark = stored ? stored === 'dark' : prefersDark;
+      if (dark) document.documentElement.setAttribute('data-theme', 'dark');
+    })();
 
-    let animationFrame;
-    let step = 0;
-    let time = 0;
-    let scale = 1;
+    var themeToggle = document.getElementById('themeToggle');
+    var iconSun  = document.getElementById('iconSun');
+    var iconMoon = document.getElementById('iconMoon');
+
+    function syncIcons() {
+      var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+      iconSun.style.display  = dark ? 'block' : 'none';
+      iconMoon.style.display = dark ? 'none'  : 'block';
+    }
+    syncIcons();
+
+    themeToggle.addEventListener('click', function () {
+      var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+      if (dark) {
+        document.documentElement.removeAttribute('data-theme');
+        localStorage.setItem('lbrp-theme', 'light');
+      } else {
+        document.documentElement.setAttribute('data-theme', 'dark');
+        localStorage.setItem('lbrp-theme', 'dark');
+      }
+      syncIcons();
+    });
+  </script>
+
+  <script>
+    /* ── Canvas ritual animation ── */
+    var canvas = document.getElementById('ritual-canvas');
+    var ctx    = canvas.getContext('2d');
+    var startButton = document.getElementById('startButton');
+    var resetButton = document.getElementById('resetButton');
+
+    var animationFrame;
+    var step = 0;
+    var time = 0;
 
     function resizeCanvas() {
-      const container = document.querySelector('.canvas-container');
-      const containerWidth = container.clientWidth;
-      scale = Math.min(1, containerWidth / 600);
-      canvas.style.width = `${600 * scale}px`;
-      canvas.style.height = `${400 * scale}px`;
+      var w = canvas.parentElement.clientWidth;
+      var scale = Math.min(1, w / 600);
+      canvas.style.width  = (600 * scale) + 'px';
+      canvas.style.height = (400 * scale) + 'px';
     }
-
     window.addEventListener('resize', resizeCanvas);
     resizeCanvas();
 
     function drawPentagram(x, y, size, color) {
       ctx.beginPath();
       ctx.moveTo(x, y - size);
-      for (let i = 0; i < 5; i++) {
-        let angle = (i * 4 * Math.PI) / 5 - Math.PI / 2;
-        ctx.lineTo(
-          x + size * Math.cos(angle),
-          y + size * Math.sin(angle)
-        );
+      for (var i = 0; i < 5; i++) {
+        var angle = (i * 4 * Math.PI) / 5 - Math.PI / 2;
+        ctx.lineTo(x + size * Math.cos(angle), y + size * Math.sin(angle));
       }
       ctx.closePath();
       ctx.strokeStyle = color;
@@ -231,13 +603,11 @@
     }
 
     function drawPractitioner(x, y, armPosition) {
-      // Head
       ctx.beginPath();
       ctx.arc(x, y - 40, 20, 0, Math.PI * 2);
       ctx.fillStyle = '#e0e0e0';
       ctx.fill();
 
-      // Body
       ctx.beginPath();
       ctx.moveTo(x, y - 20);
       ctx.lineTo(x, y + 60);
@@ -245,23 +615,17 @@
       ctx.lineWidth = 4;
       ctx.stroke();
 
-      // Arms
       ctx.beginPath();
       if (armPosition === 'forehead') {
-        ctx.moveTo(x - 30, y + 20);
-        ctx.lineTo(x, y - 30);
+        ctx.moveTo(x - 30, y + 20); ctx.lineTo(x, y - 30);
       } else if (armPosition === 'chest') {
-        ctx.moveTo(x - 30, y + 20);
-        ctx.lineTo(x, y + 30);
+        ctx.moveTo(x - 30, y + 20); ctx.lineTo(x, y + 30);
       } else if (armPosition === 'right') {
-        ctx.moveTo(x, y);
-        ctx.lineTo(x + 40, y - 20);
+        ctx.moveTo(x, y); ctx.lineTo(x + 40, y - 20);
       } else if (armPosition === 'left') {
-        ctx.moveTo(x, y);
-        ctx.lineTo(x - 40, y - 20);
+        ctx.moveTo(x, y); ctx.lineTo(x - 40, y - 20);
       } else {
-        ctx.moveTo(x - 30, y + 20);
-        ctx.lineTo(x + 30, y + 20);
+        ctx.moveTo(x - 30, y + 20); ctx.lineTo(x + 30, y + 20);
       }
       ctx.strokeStyle = '#e0e0e0';
       ctx.lineWidth = 4;
@@ -273,133 +637,117 @@
       ctx.fillStyle = '#e0e0e0';
       ctx.textAlign = 'center';
       ctx.fillText(name, x, y);
-
-      // Simple glow effect
       ctx.beginPath();
       ctx.arc(x, y - 30, 20, 0, Math.PI * 2);
-      ctx.fillStyle = 'rgba(255, 255, 255, 0.2)';
+      ctx.fillStyle = 'rgba(255,255,255,0.2)';
       ctx.fill();
     }
 
     function animate() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      
-      time += 1/60;  // Assuming 60 FPS
+      time += 1 / 60;
 
-      switch(step) {
-        case 0:  // Qabalistic Cross
-          drawPractitioner(300, 200, 'forehead');
-          if (time > 1) {
-            step++;
-            time = 0;
-          }
-          break;
-        case 1:
-          drawPractitioner(300, 200, 'chest');
-          if (time > 1) {
-            step++;
-            time = 0;
-          }
-          break;
-        case 2:
-          drawPractitioner(300, 200, 'right');
-          if (time > 1) {
-            step++;
-            time = 0;
-          }
-          break;
-        case 3:
-          drawPractitioner(300, 200, 'left');
-          if (time > 1) {
-            step++;
-            time = 0;
-          }
-          break;
-        case 4:
-          drawPractitioner(300, 200, 'center');
-          if (time > 1) {
-            step++;
-            time = 0;
-          }
-          break;
-        case 5:  // East Pentagram
-          drawPentagram(500, 200, 50, `rgba(255, 255, 0, ${Math.min(time, 1)})`);
-          if (time > 2) {
-            step++;
-            time = 0;
-          }
-          break;
-        case 6:  // South Pentagram
-          drawPentagram(500, 200, 50, 'rgba(255, 255, 0, 1)');
-          drawPentagram(300, 350, 50, `rgba(255, 0, 0, ${Math.min(time, 1)})`);
-          if (time > 2) {
-            step++;
-            time = 0;
-          }
-          break;
-        case 7:  // West Pentagram
-          drawPentagram(500, 200, 50, 'rgba(255, 255, 0, 1)');
-          drawPentagram(300, 350, 50, 'rgba(255, 0, 0, 1)');
-          drawPentagram(100, 200, 50, `rgba(0, 0, 255, ${Math.min(time, 1)})`);
-          if (time > 2) {
-            step++;
-            time = 0;
-          }
-          break;
-        case 8:  // North Pentagram
-          drawPentagram(500, 200, 50, 'rgba(255, 255, 0, 1)');
-          drawPentagram(300, 350, 50, 'rgba(255, 0, 0, 1)');
-          drawPentagram(100, 200, 50, 'rgba(0, 0, 255, 1)');
-          drawPentagram(300, 50, 50, `rgba(0, 255, 0, ${Math.min(time, 1)})`);
-          if (time > 2) {
-            step++;
-            time = 0;
-          }
-          break;
-        case 9:  // Archangels
-          drawPentagram(500, 200, 50, 'rgba(255, 255, 0, 1)');
-          drawPentagram(300, 350, 50, 'rgba(255, 0, 0, 1)');
-          drawPentagram(100, 200, 50, 'rgba(0, 0, 255, 1)');
-          drawPentagram(300, 50, 50, 'rgba(0, 255, 0, 1)');
+      switch (step) {
+        case 0: drawPractitioner(300, 200, 'forehead');
+          if (time > 1) { step++; time = 0; } break;
+        case 1: drawPractitioner(300, 200, 'chest');
+          if (time > 1) { step++; time = 0; } break;
+        case 2: drawPractitioner(300, 200, 'right');
+          if (time > 1) { step++; time = 0; } break;
+        case 3: drawPractitioner(300, 200, 'left');
+          if (time > 1) { step++; time = 0; } break;
+        case 4: drawPractitioner(300, 200, 'center');
+          if (time > 1) { step++; time = 0; } break;
+        case 5:
+          drawPentagram(500, 200, 50, 'rgba(255,255,0,' + Math.min(time, 1) + ')');
+          if (time > 2) { step++; time = 0; } break;
+        case 6:
+          drawPentagram(500, 200, 50, 'rgba(255,255,0,1)');
+          drawPentagram(300, 350, 50, 'rgba(255,0,0,' + Math.min(time, 1) + ')');
+          if (time > 2) { step++; time = 0; } break;
+        case 7:
+          drawPentagram(500, 200, 50, 'rgba(255,255,0,1)');
+          drawPentagram(300, 350, 50, 'rgba(255,0,0,1)');
+          drawPentagram(100, 200, 50, 'rgba(0,0,255,' + Math.min(time, 1) + ')');
+          if (time > 2) { step++; time = 0; } break;
+        case 8:
+          drawPentagram(500, 200, 50, 'rgba(255,255,0,1)');
+          drawPentagram(300, 350, 50, 'rgba(255,0,0,1)');
+          drawPentagram(100, 200, 50, 'rgba(0,0,255,1)');
+          drawPentagram(300,  50, 50, 'rgba(0,255,0,' + Math.min(time, 1) + ')');
+          if (time > 2) { step++; time = 0; } break;
+        case 9:
+          drawPentagram(500, 200, 50, 'rgba(255,255,0,1)');
+          drawPentagram(300, 350, 50, 'rgba(255,0,0,1)');
+          drawPentagram(100, 200, 50, 'rgba(0,0,255,1)');
+          drawPentagram(300,  50, 50, 'rgba(0,255,0,1)');
           if (time < 1) drawArchangel(500, 200, 'Raphael');
-          if (time < 2 && time >= 1) drawArchangel(300, 350, 'Michael');
-          if (time < 3 && time >= 2) drawArchangel(100, 200, 'Gabriel');
-          if (time < 4 && time >= 3) drawArchangel(300, 50, 'Uriel');
-          if (time > 4) {
-            step++;
-            time = 0;
-          }
-          break;
-        case 10:  // Final glow
-          drawPentagram(500, 200, 50, `rgba(255, 255, 0, ${1 + Math.sin(time * 5) * 0.2})`);
-          drawPentagram(300, 350, 50, `rgba(255, 0, 0, ${1 + Math.sin(time * 5) * 0.2})`);
-          drawPentagram(100, 200, 50, `rgba(0, 0, 255, ${1 + Math.sin(time * 5) * 0.2})`);
-          drawPentagram(300, 50, 50, `rgba(0, 255, 0, ${1 + Math.sin(time * 5) * 0.2})`);
+          if (time >= 1 && time < 2) drawArchangel(300, 350, 'Michael');
+          if (time >= 2 && time < 3) drawArchangel(100, 200, 'Gabriel');
+          if (time >= 3 && time < 4) drawArchangel(300,  50, 'Uriel');
+          if (time > 4) { step++; time = 0; } break;
+        case 10:
+          drawPentagram(500, 200, 50, 'rgba(255,255,0,' + (1 + Math.sin(time * 5) * 0.2) + ')');
+          drawPentagram(300, 350, 50, 'rgba(255,0,0,'   + (1 + Math.sin(time * 5) * 0.2) + ')');
+          drawPentagram(100, 200, 50, 'rgba(0,0,255,'   + (1 + Math.sin(time * 5) * 0.2) + ')');
+          drawPentagram(300,  50, 50, 'rgba(0,255,0,'   + (1 + Math.sin(time * 5) * 0.2) + ')');
           drawArchangel(500, 200, 'Raphael');
           drawArchangel(300, 350, 'Michael');
           drawArchangel(100, 200, 'Gabriel');
-          drawArchangel(300, 50, 'Uriel');
+          drawArchangel(300,  50, 'Uriel');
           break;
       }
-
       animationFrame = requestAnimationFrame(animate);
     }
 
     function startAnimation() {
       cancelAnimationFrame(animationFrame);
-      step = 0;
-      time = 0;
+      step = 0; time = 0;
       animate();
     }
 
     function resetAnimation() {
       cancelAnimationFrame(animationFrame);
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      step = 0;
-      time = 0;
+      step = 0; time = 0;
     }
 
     startButton.addEventListener('click', startAnimation);
     resetButton.addEventListener('click', resetAnimation);
   </script>
-</body></html>
+
+  <script>
+    /* ── Scroll reveal via IntersectionObserver ── */
+    var reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (reducedMotion) {
+      /* Show everything immediately */
+      document.querySelectorAll('.reveal').forEach(function (el) {
+        el.classList.add('visible');
+      });
+    } else {
+      var observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            /* Stagger siblings: find index among .reveal siblings */
+            var siblings = entry.target.parentElement
+              ? Array.from(entry.target.parentElement.querySelectorAll('.reveal'))
+              : [];
+            var elementIndex = siblings.indexOf(entry.target);
+            var delay = Math.min(elementIndex * 60, 240); /* max 240 ms stagger */
+            setTimeout(function () {
+              entry.target.classList.add('visible');
+            }, delay);
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.12 });
+
+      document.querySelectorAll('.reveal').forEach(function (el) {
+        observer.observe(el);
+      });
+    }
+  </script>
+
+</body>
+</html>
