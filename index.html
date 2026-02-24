@@ -573,6 +573,7 @@
     /* ── Canvas ritual animation ── */
     var canvas = document.getElementById('ritual-canvas');
     var ctx    = canvas.getContext('2d');
+    ctx.imageSmoothingEnabled = true;
     var startButton = document.getElementById('startButton');
     var resetButton = document.getElementById('resetButton');
 
@@ -603,33 +604,98 @@
     }
 
     function drawPractitioner(x, y, armPosition) {
+      ctx.save();
+      ctx.lineCap  = 'round';
+      ctx.lineJoin = 'round';
+
+      var col = '#e0e0e0';
+
+      // --- Legs (drawn first so torso covers the join) ---
+      ctx.strokeStyle = col;
+      ctx.lineWidth   = 9;
+
+      ctx.beginPath();                          // left leg
+      ctx.moveTo(x - 8,  y + 22);
+      ctx.lineTo(x - 10, y + 58);
+      ctx.stroke();
+
+      ctx.beginPath();                          // right leg
+      ctx.moveTo(x + 8,  y + 22);
+      ctx.lineTo(x + 10, y + 58);
+      ctx.stroke();
+
+      ctx.lineWidth = 5;
+      ctx.beginPath();                          // left foot
+      ctx.moveTo(x - 10, y + 58);
+      ctx.lineTo(x - 21, y + 62);
+      ctx.stroke();
+
+      ctx.beginPath();                          // right foot
+      ctx.moveTo(x + 10, y + 58);
+      ctx.lineTo(x + 21, y + 62);
+      ctx.stroke();
+
+      // --- Torso (filled trapezoid: wide at shoulders, narrower at hips) ---
       ctx.beginPath();
-      ctx.arc(x, y - 40, 20, 0, Math.PI * 2);
-      ctx.fillStyle = '#e0e0e0';
+      ctx.moveTo(x - 20, y - 24);              // left shoulder
+      ctx.lineTo(x + 20, y - 24);              // right shoulder
+      ctx.lineTo(x + 13, y + 24);              // right hip
+      ctx.lineTo(x - 13, y + 24);              // left hip
+      ctx.closePath();
+      ctx.fillStyle = col;
       ctx.fill();
 
+      // --- Neck ---
       ctx.beginPath();
-      ctx.moveTo(x, y - 20);
-      ctx.lineTo(x, y + 60);
-      ctx.strokeStyle = '#e0e0e0';
-      ctx.lineWidth = 4;
+      ctx.rect(x - 5, y - 38, 10, 16);
+      ctx.fillStyle = col;
+      ctx.fill();
+
+      // --- Head ---
+      ctx.beginPath();
+      ctx.arc(x, y - 50, 14, 0, Math.PI * 2);
+      ctx.fillStyle = col;
+      ctx.fill();
+
+      // --- Resting arm (figure's left = viewer's right) always hangs at side ---
+      ctx.beginPath();
+      ctx.moveTo(x - 20, y - 24);              // shoulder
+      ctx.lineTo(x - 24, y + 10);              // elbow
+      ctx.lineTo(x - 22, y + 36);              // hand
+      ctx.strokeStyle = col;
+      ctx.lineWidth   = 7;
       ctx.stroke();
 
-      ctx.beginPath();
+      // --- Active arm (figure's right = viewer's left) driven by armPosition ---
+      var shoulderX = x + 20, shoulderY = y - 24;
+      var elbowX, elbowY, handX, handY;
+
       if (armPosition === 'forehead') {
-        ctx.moveTo(x - 30, y + 20); ctx.lineTo(x, y - 30);
+        elbowX = shoulderX - 4;  elbowY = shoulderY - 14;
+        handX  = x + 2;          handY  = y - 54;          // hand near forehead
       } else if (armPosition === 'chest') {
-        ctx.moveTo(x - 30, y + 20); ctx.lineTo(x, y + 30);
+        elbowX = shoulderX - 14; elbowY = shoulderY + 20;
+        handX  = x + 5;          handY  = y - 4;           // hand at chest
       } else if (armPosition === 'right') {
-        ctx.moveTo(x, y); ctx.lineTo(x + 40, y - 20);
+        elbowX = shoulderX + 18; elbowY = shoulderY + 10;
+        handX  = x + 58;         handY  = y - 12;          // arm extended right
       } else if (armPosition === 'left') {
-        ctx.moveTo(x, y); ctx.lineTo(x - 40, y - 20);
-      } else {
-        ctx.moveTo(x - 30, y + 20); ctx.lineTo(x + 30, y + 20);
+        elbowX = shoulderX - 18; elbowY = shoulderY + 6;
+        handX  = x - 42;         handY  = y - 12;          // arm extended left (across body)
+      } else {                                              // center / default: arm hangs at side
+        elbowX = shoulderX + 4;  elbowY = shoulderY + 18;
+        handX  = x + 22;         handY  = y + 36;
       }
-      ctx.strokeStyle = '#e0e0e0';
-      ctx.lineWidth = 4;
+
+      ctx.beginPath();
+      ctx.moveTo(shoulderX, shoulderY);
+      ctx.lineTo(elbowX, elbowY);
+      ctx.lineTo(handX, handY);
+      ctx.strokeStyle = col;
+      ctx.lineWidth   = 7;
       ctx.stroke();
+
+      ctx.restore();
     }
 
     function drawArchangel(x, y, name) {
