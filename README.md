@@ -1,6 +1,6 @@
 # LBRP Ritual Guide
 
-An interactive, animated guide for learning and practicing the **Lesser Banishing Ritual of the Pentagram (LBRP)** — one of the foundational rituals of Western esoteric tradition.
+An illuminated, animated guide for learning and practicing the **Lesser Banishing Ritual of the Pentagram (LBRP)** — one of the foundational rituals of the Western esoteric tradition (Hermetic Qabalah / the Golden Dawn).
 
 Live site → **[marcusg999.github.io/LBRPGuide.github.io](https://marcusg999.github.io/LBRPGuide.github.io/)**
 
@@ -8,80 +8,77 @@ Live site → **[marcusg999.github.io/LBRPGuide.github.io](https://marcusg999.gi
 
 ## About the App
 
-The LBRP Ritual Guide is a single-page web app that teaches the complete Lesser Banishing Ritual of the Pentagram through a step-by-step 2D canvas animation. It walks practitioners through each phase of the ritual — from the opening Qabalistic Cross through the four directional pentagrams and the invocation of the Archangels — providing a visual reference that complements real practice.
+The LBRP Ritual Guide is a single-page web app that teaches the complete ritual through a lifelike 2D canvas animation. A robed practitioner moves through every phase — the opening Qabalistic Cross, the tracing of the four banishing pentagrams, and the calling of the Archangels — while synced captions name each gesture and vibrated Name. Beneath the animation, an ordered reference walks through the rite step by step.
 
-The app is designed with a modern **iPhone-first layout** that feels at home on any device, from a phone screen to a desktop browser.
+The visual identity is a **"candlelit initiate's grimoire"**: an obsidian night-temple ground, antique-gold accents, elemental colours reserved for the four quarters, and a classical serif type system.
+
+---
+
+## The Animation
+
+The centrepiece is a hand-built canvas engine designed to move like a real person rather than snap between static poses:
+
+- **Two-bone inverse kinematics** for the arms — the elbow bends naturally as the hand reaches each target (forehead, shoulders, heart, or out to a quarter).
+- **Eased pose tweening** — every gesture is smoothed toward its target with frame-rate-independent damping, giving deliberate, ritual-paced motion.
+- **Secondary motion** — continuous breathing, idle weight-shift sway, and robe/hem follow-through keep the figure alive between gestures.
+- **Light-projection tracing** — the practitioner projects a beam of light that traces each **banishing earth pentagram** in the correct stroke order (lower-left → crown → lower-right → upper-left → upper-right), building the star as it draws.
+- **A faithful timeline** — the Qabalistic Cross, the four quarters with their divine Names, the carried circle of light, the Archangel invocation, and the closing six-rayed star, each with a caption naming the gesture and word.
+
+The ritual movements were researched against traditional Golden Dawn sources to keep the sequence, stroke order, directions, divine Names, and Archangel placements accurate.
+
+---
+
+## The Rite (as taught in the app)
+
+### I. The Qabalistic Cross
+| Gesture | Word | Meaning |
+|---------|------|---------|
+| Touch the forehead | *Atah* | Thou art |
+| Draw down to the breast | *Malkuth* | the Kingdom |
+| Touch the right shoulder | *Ve-Geburah* | and the Power |
+| Touch the left shoulder | *Ve-Gedulah* | and the Glory |
+| Clasp the hands at the heart | *Le-Olam, Amen* | to the ages, Amen |
+
+### II. The Four Pentagrams (turning clockwise)
+| Quarter | Element | Divine Name | Vibration |
+|---------|---------|-------------|-----------|
+| East | Air | YHVH | Yod-Heh-Vav-Heh |
+| South | Fire | ADNI | Adonai |
+| West | Water | AHIH | Eheieh |
+| North | Earth | AGLA | Agla |
+
+### III. The Archangels
+| Direction | Archangel | Element |
+|-----------|-----------|---------|
+| Before me · East | Raphael | Air |
+| Behind me · West | Gabriel | Water |
+| On my right hand · South | Michael | Fire |
+| On my left hand · North | Uriel | Earth |
+
+### IV. The Six-Rayed Star
+*"For about me flames the Pentagram, and within me shines the Six-rayed Star."* The Qabalistic Cross is repeated to close, and the circle stands complete.
 
 ---
 
 ## Features
 
-### Interactive Canvas Animation
-- A 2D animated canvas visualizes each stage of the ritual in sequence.
-- **Start** button runs the full animation from the Qabalistic Cross through to the final protective circle.
-- **Reset** button clears the canvas so you can restart at any time.
-- The canvas resizes responsively to fit any screen width.
-
-### Ritual Steps Reference
-Four clearly labelled sections cover every part of the ritual:
-
-| Step | Content |
-|------|---------|
-| **1. The Qabalistic Cross** | Five movements with their Hebrew phrases and translations |
-| **2. The Pentagrams** | The four cardinal pentagrams and their associated colours |
-| **3. Calling the Archangels** | Raphael, Michael, Gabriel, and Uriel and their directions |
-| **4. Completion** | The closing circle of all four glowing pentagrams |
-
-### The Value of LBRP
-A dedicated section explains why the LBRP matters, covering eight key benefits for students of magick and meditation:
-
-- Energy Cleansing
-- Psychic Protection
-- Concentration Enhancement
-- Elemental Balancing
-- Meditative Framework
-- Energetic Attunement
-- Psychological Integration
-- Preparation for Advanced Work
-
-### Light & Dark Mode
-- Toggle between light and dark themes with a single tap.
-- Your preference is saved to `localStorage` and restored on every visit.
-- The app also respects your operating system's `prefers-color-scheme` setting on first load.
-
-### iPhone-First Design
-- Narrow, app-like column layout (max 430 px) optimised for one-handed mobile use.
-- Sticky frosted-glass header with `backdrop-filter` blur.
-- iOS safe-area insets (`env(safe-area-inset-*)`) for full support of notched and home-bar devices.
-- Apple system font stack (`-apple-system`, `SF Pro Display/Text`).
-- Rounded cards, subtle shadows, and iOS-inspired colour tokens.
-
-### Smooth Animations
-- **Page load:** the hero section fades and slides in on arrival.
-- **Scroll reveal:** each section card animates into view as you scroll, with a gentle stagger between siblings.
-- **Micro-interactions:** buttons scale slightly on press for tactile feedback.
-- All motion is automatically disabled when the user has `prefers-reduced-motion` enabled, ensuring full accessibility.
-
-### Accessibility
-- Semantic HTML5 structure (`<header>`, `<main>`, `<section>`, `<article>`, `<footer>`).
-- Sections labelled with `aria-labelledby`; icon buttons labelled with `aria-label`.
-- Keyboard-navigable with a clear `:focus-visible` ring.
-- Sufficient colour contrast in both light and dark themes.
+- **Lifelike ritual animation** with Begin / Pause / Replay and Reset controls, a progress bar, and live captions.
+- **Ordered reference** — the full rite laid out as a numbered sequence, with the Qabalistic Cross gestures, the four quarter cards (colour-coded by element), the Archangels, and the closing.
+- **"Why practice" essay** — a rewritten, plain-language account of what the daily rite offers students of magick and meditation.
+- **Light & dark themes** — an obsidian night temple by default, or an illuminated-parchment manuscript in light mode. The choice is saved to `localStorage` and respects the OS `prefers-color-scheme` on first load. The animation stage stays a dark "window into the temple" in both themes so the figure always reads clearly.
+- **Accessibility** — semantic HTML5, `aria-live` captions, keyboard-visible focus rings, and a full static tableau of the completed circle for visitors with `prefers-reduced-motion`.
 
 ---
 
 ## Running Locally
 
-No build step required. The app is a single self-contained HTML file with no external dependencies.
+No build step required — a single self-contained HTML file (typefaces load from Google Fonts).
 
 ```bash
-# Clone the repo
 git clone https://github.com/marcusg999/LBRPGuide.github.io.git
 cd LBRPGuide.github.io
-
-# Serve with any static file server, e.g.:
 python3 -m http.server 8080
-# Then open http://localhost:8080 in your browser
+# open http://localhost:8080
 ```
 
 ---
@@ -91,14 +88,20 @@ python3 -m http.server 8080
 | Layer | Technology |
 |-------|-----------|
 | Markup | Semantic HTML5 |
-| Styling | Custom CSS with CSS custom properties (design tokens) |
-| Animation | CSS `@keyframes` + `IntersectionObserver` scroll reveal |
-| Canvas | Native HTML Canvas 2D API |
-| Theming | CSS custom properties + `localStorage` |
+| Styling | Custom CSS with design tokens; dual light/dark themes |
+| Type | Cinzel, Cormorant Garamond & EB Garamond (Google Fonts) |
+| Animation | Hand-written HTML Canvas 2D engine — two-bone IK, eased tweening, procedural secondary motion |
+| Reveal / theming | `IntersectionObserver` + CSS custom properties + `localStorage` |
 | Hosting | GitHub Pages |
 
 ---
 
 ## Deployment
 
-The site is deployed automatically via **GitHub Pages** from the `main` branch. No CI/CD configuration is required — push to `main` and the live site updates within minutes.
+Deployed automatically via **GitHub Pages** from the `main` branch — push to `main` and the live site updates within minutes.
+
+---
+
+## Disclaimer
+
+This animation is a learning aid and visualisation tool. Real practice asks for your own focus, intent, breath, and energy — more than any figure on a screen can show.
