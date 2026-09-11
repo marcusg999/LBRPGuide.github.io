@@ -827,8 +827,12 @@
       return { x: lerp(pts[i].x, pts[i + 1].x, f), y: lerp(pts[i].y, pts[i + 1].y, f) };
     }
 
-    /* Two-bone IK: returns {elbow, wrist} given shoulder S and target T (local coords) */
-    function ik(S, T, l1, l2, bend) {
+    /* Two-bone IK: returns {elbow, wrist} given shoulder S and target T (local coords).
+       `side` is +1 for the screen-right arm, -1 for the left. Of the two mirror-image
+       elbow solutions we always pick the one that bows OUTWARD (away from the body's
+       centre line), with a gentle downward tiebreak so raised or outstretched arms
+       still let the elbow drop naturally — the way a real elbow hangs. */
+    function ik(S, T, l1, l2, side) {
       var dx = T.x - S.x, dy = T.y - S.y;
       var d = Math.hypot(dx, dy);
       var reach = l1 + l2 - 0.5;
@@ -839,8 +843,10 @@
       var a = Math.atan2(ty - S.y, tx - S.x);
       var cosA = clamp((d * d + l1 * l1 - l2 * l2) / (2 * d * l1), -1, 1);
       var A = Math.acos(cosA);
-      var ea = a + bend * A;
-      var elbow = { x: S.x + l1 * Math.cos(ea), y: S.y + l1 * Math.sin(ea) };
+      function elbowAt(sign) { var ea = a + sign * A; return { x: S.x + l1 * Math.cos(ea), y: S.y + l1 * Math.sin(ea) }; }
+      var e1 = elbowAt(1), e2 = elbowAt(-1);
+      function score(e) { return side * (e.x - S.x) + 0.5 * (e.y - S.y); }
+      var elbow = score(e1) >= score(e2) ? e1 : e2;
       return { elbow: elbow, wrist: { x: tx, y: ty } };
     }
 
